@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2023 at 01:09 PM
+-- Generation Time: Jul 10, 2023 at 02:03 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -18,51 +18,53 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `4_login`
+-- Database: `4_async_crud`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `courses`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `courses` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `duration` varchar(255) NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `courses`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`) VALUES
-(1, 'Uzair Farooq', 'uzair@gmail.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '2023-07-07 10:33:47'),
-(2, 'Hassan Saab', 'hassan@gmail.com', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', '2023-07-07 10:34:21');
+INSERT INTO `courses` (`id`, `name`, `duration`, `updated_at`, `created_at`) VALUES
+(5, 'Programming', '4 months', NULL, '2023-07-10 11:46:28'),
+(6, 'DM', '2 Months', NULL, '2023-07-10 11:49:23'),
+(7, 'GD', '2 Months', NULL, '2023-07-10 11:53:51'),
+(8, 'Waseem', '2 Months', NULL, '2023-07-10 11:54:24'),
+(9, 'Waleed', '4 months', NULL, '2023-07-10 11:55:41');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `courses`
 --
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `courses`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `courses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
