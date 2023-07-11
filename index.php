@@ -154,6 +154,7 @@
                         // tableElement.classList.toggle('d-none');
                         let records = '';
                         let sr = 1;
+
                         result.forEach(function(value, index) {
                             records += `<tr>
                                     <td>${sr++}</td>
@@ -162,10 +163,10 @@
                                     <td>${value.created_at}</td>
                                     <td>${value.updated_at}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+                                        <button type="button" class="btn btn-primary" onclick="editCourse(${value.id})" data-bs-toggle="modal" data-bs-target="#editModal">
                                             Edit
                                         </button>
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                        <button type="button" class="btn btn-danger" onclick="deleteCourse(${value.id})" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                             Delete
                                         </button>
                                     </td>
@@ -179,6 +180,133 @@
                     console.log(error);
                 })
         }
+
+        const editFormElement = document.getElementById('edit-form');
+        const errorEditElement = document.getElementById('error-edit');
+        const successEditElement = document.getElementById('success-edit');
+
+        const nameEditElement = document.getElementById('name-edit');
+        const durationEditElement = document.getElementById('duration-edit');
+
+        let outterId = '';
+
+        function editCourse(id) {
+            outterId = id;
+            const data = {
+                id: id,
+                submit: 1,
+            };
+
+            fetch('./fetch-single-course.php', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application.json'
+                    }
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    nameEditElement.value = result.name;
+                    durationEditElement.value = result.duration;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
+
+        editFormElement.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let nameEditValue = nameEditElement.value;
+            let durationEditValue = durationEditElement.value;
+
+            errorEditElement.innerText = "";
+            nameEditElement.classList.remove('is-invalid');
+            durationEditElement.classList.remove('is-invalid');
+
+            if (nameEditValue == "") {
+                errorEditElement.innerText = "Enter course name!";
+                nameEditElement.classList.add('is-invalid');
+            } else if (durationEditValue == "") {
+                errorEditElement.innerText = "Enter course duration!";
+                durationEditElement.classList.add('is-invalid');
+            } else {
+                const data = {
+                    name: nameEditValue,
+                    duration: durationEditValue,
+                    id: outterId,
+                    submit: 1
+                };
+
+                fetch('./edit-course.php', {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        headers: {
+                            'Content-Type': 'application.json'
+                        }
+                    })
+                    .then(function(response) {
+                        return response.json();
+                    })
+                    .then(function(result) {
+                        if (result.nameError) {
+                            errorEditElement.innerText = result.nameError;
+                            nameEditElement.classList.add('is-invalid');
+                        } else if (result.durationError) {
+                            errorEditElement.innerText = result.durationError;
+                            durationEditElement.classList.add('is-invalid');
+                        } else if (result.success) {
+                            successEditElement.innerText = result.success;
+                            showCourses();
+                        } else if (result.failure) {
+                            errorEditElement.innerText = result.failure;
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+        });
+
+        function deleteCourse(id) {
+            outterId = id;
+        }
+
+        const deleteFormElement = document.getElementById('delete-form');
+        const errorDeleteElement = document.getElementById('error-delete');
+        const successDeleteElement = document.getElementById('success-delete');
+
+        deleteFormElement.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const data = {
+                id: outterId,
+                submit: 1,
+            };
+
+            fetch('./delete-course.php', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application.json'
+                    }
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(result) {
+                    if (result.success) {
+                        successDeleteElement.innerText = result.success;
+                        showCourses();
+                    } else if (result.failure) {
+                        errorDeleteElement.innerText = result.failure;
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        })
     </script>
 
 </body>

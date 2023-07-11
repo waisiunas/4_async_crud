@@ -41,8 +41,10 @@
             </div>
             <div class="modal-body">
                 <form id="edit-form">
-                    <div class="text-danger" id="error-edit"></div>
-                    <div class="text-success" id="success-edit"></div>
+                    <div class="mb-3">
+                        <div class="text-danger" id="error-edit"></div>
+                        <div class="text-success" id="success-edit"></div>
+                    </div>
 
                     <div class="mb-3">
                         <input type="text" class="form-control" id="name-edit" placeholder="Enter course name!">
@@ -72,10 +74,16 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    Are you sure, you want to delete?
+                    <div class="text-danger" id="error-delete"></div>
+                    <div class="text-success" id="success-delete"></div>
                 </div>
-                <button type="button" class="btn btn-danger" id="btn-delete">Delete</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="delete-form">
+                    <div class="mb-3">
+                        Are you sure, you want to delete?
+                    </div>
+                    <input type="submit" class="btn btn-danger" id="btn-delete">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
             </div>
         </div>
     </div>
